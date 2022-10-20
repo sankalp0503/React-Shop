@@ -18,7 +18,7 @@ const ListUserComponent = () => {
       setTotalPages(response.data.totalPages)
       // console.log(response.data.totalPages)
       // console.log(currentPage)
-      // console.log(response.data)
+      //console.log(response)
       // console.log(totalPages)
     }).catch(error =>{
       console.log(error);
@@ -27,9 +27,11 @@ const ListUserComponent = () => {
   
    const deleteUser = (userId) =>{
     UserService.deleteUser(userId).then((response) =>{
+      
       UserService.getPaginatedUsers(currentPage,pageSize).then((response) =>{
         setUsers(response.data.content)
         setTotalPages(response.data.totalPages)
+        console.log(currentPage)
       }).catch(error =>{
         console.log(error);
       })
@@ -76,11 +78,11 @@ const ListUserComponent = () => {
 
    const handlePageClick = (data) =>{
 
-    let currentPage = (data.selected )
-    //console.log(currentPage)
-    UserService.getPaginatedUsers(currentPage,pageSize).then((response) =>{
+    let cPage = (data.selected )
+    setCurrentPage(cPage)
+    console.log(cPage)
+    UserService.getPaginatedUsers(cPage,pageSize).then((response) =>{
       setUsers(response.data.content)
-      
     }).catch(error =>{
       console.log(error);
     })

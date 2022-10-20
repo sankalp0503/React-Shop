@@ -18,13 +18,6 @@ class UserService {
     return axios.get(USER_API_BASE_URL+'/page/'+currentPage+'/'+pageSize);
   }
 
-  getCursorPaginatedUsersById(userId,cursor){
-    return axios.get(ADDRESS_API_BASE_URL+'/cursorPaginateUserAddress/'+userId+'?cursor='+cursor);
-  }
-
-
-
-
   createUser(user){
     return axios.post(USER_API_BASE_URL , user);
   }
@@ -47,6 +40,22 @@ class UserService {
 
   getAllAddress(){
     return axios.get(ADDRESS_API_BASE_URL+'/all');
+  }
+
+  getCursorPaginatedAllAddresses(cursor){
+    return axios.get (ADDRESS_API_BASE_URL+'/cursorPaginateAllAddress?cursor='+cursor);
+  }
+
+  getCursorPaginatedAddressByUserId(userId,cursor){
+    return axios.get(ADDRESS_API_BASE_URL+'/cursorPaginateUserAddress/'+userId+'?cursor='+cursor);
+  }
+
+  getFilterAddress(keyword){
+    return axios.get (ADDRESS_API_BASE_URL+'/filterAddress/'+keyword);
+  }
+
+  getFilterAddressByUserId(userId,keyword){
+     return axios.get(ADDRESS_API_BASE_URL+'/filterAddressByUserId/'+userId+'/'+keyword);
   }
 
   getDefaultAddress(userId){
@@ -104,6 +113,18 @@ class UserService {
 
   getAllProducts(){
     return axios.get(PRODUCT_API_BASE_URL+'/all');
+  }
+
+  getCursorPaginatedAllProducts(cursor){
+    return axios.get (PRODUCT_API_BASE_URL+'/cursorPaginateAllProducts?cursor='+cursor);
+  }
+
+  getFilterProducts(keyword){
+    return axios.get (PRODUCT_API_BASE_URL+'/filterProduct/'+keyword);
+  }
+
+  getAllProductsPaginatedAndSorted(cursor ,field){
+    return axios.get(PRODUCT_API_BASE_URL+'/cursorPaginateAllProductsWithSorting/'+field+'?cursor='+cursor);
   }
 
   getAllCartProducts(){

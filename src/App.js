@@ -29,6 +29,10 @@ import ListAllAddressComponent from "./components/ListAllAddressComponent";
 import ListAllProductsComponent from "./components/ListAllProductsComponent";
 import ListAllCartProductsComponent from "./components/ListAllCartProductsComponent";
 import DefaultAddressComponent from "./components/DefaultAddressComponent";
+import FilterAddressesComponent from "./components/FilterAddressesComponent";
+import FilterAddressByUserIdComponent from "./components/FilterAddressByUserIdComponent";
+import FilterProductsComponent from "./components/FilterProductsComponent";
+import SortProductsComponent from "./components/SortProductsComponent";
 
 
 
@@ -68,6 +72,11 @@ function App() {
       <Route path ="/all-address" component={ListAllAddressComponent}></Route>
       <Route path ="/all-products" component={ListAllProductsComponent}></Route>
       <Route path ="/all-cartProducts" component={ListAllCartProductsComponent}></Route>
+      <Route path ="/filterAddresses/:keyword" component={FilterAddressesComponent}></Route>
+      <Route path ="/filterAddressByUserId/:userId/:keyword" component={FilterAddressByUserIdComponent}></Route>
+      <Route path ="/filterProducts/:keyword" component={FilterProductsComponent}></Route>
+      <Route path ="/sortProducts/:field" component={SortProductsComponent}></Route>
+
 
     </Switch>
   </div>

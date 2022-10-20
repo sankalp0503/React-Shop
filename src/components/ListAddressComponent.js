@@ -9,15 +9,19 @@ const ListAddressComponent = () => {
   
   const { userId } = useParams();
   const [ addresses, setAddresses] = useState([])
+ // for if we use page interface then we use below values but now we use CURSOR
  // const [ currentPage, setCurrentPage] = useState(0);
+ // let pageSize =2;
   const [ totalPages, setTotalPages] = useState(1)
   const [ cursor , setCursor] = useState("");
+  const [ previous , setPrevious] = useState("")
+  const [ keyword , setKeyword ] = useState("")
 
- // let pageSize =2;
+ 
 
 
   useEffect( ()  => {
-    UserService.getCursorPaginatedUsersById(userId,cursor).then((response) =>{
+    UserService.getCursorPaginatedAddressByUserId(userId,cursor).then((response) =>{
       setAddresses(response.data.list)
       setTotalPages(response.data.totalPages)
       setCursor(response.data.cursor)
@@ -28,11 +32,13 @@ const ListAddressComponent = () => {
   },  [])
   
 
-  // needs to be modified
+  
   const deleteAddress = (addressId) =>{
     UserService.deleteAddress(addressId).then((response) =>{
-      UserService.getAddressByUserId(userId).then((response) =>{
-        setAddresses(response.data)
+      UserService.getCursorPaginatedAddressByUserId(userId,previous).then((response) =>{
+        setAddresses(response.data.list)
+        setTotalPages(response.data.totalPages)
+        setCursor(response.data.cursor)
         console.log(response.data);
       }).catch(error =>{
         console.log(error);
@@ -63,6 +69,11 @@ const ListAddressComponent = () => {
     window.location.href ="/default-address/"+userId;
   }
 
+  const cancel=(e) => {
+    e.preventDefault();
+    window.location.href = "/address/"+userId;
+  }
+
   const setDefault =(addressId)=> {
     UserService.setDefaultAddress(addressId).then((response) =>{
       UserService.getAddressByUserId(userId).then((response) =>{
@@ -80,23 +91,42 @@ const ListAddressComponent = () => {
 
   }
 
+
+  const filterAddresses=(e) => {
+    e.preventDefault();
+    window.location.href ="/filterAddressByUserId/"+userId+'/'+keyword;
+  }
+
   const handlePageClick = (data) =>{
 
     //let currentPage = (data.selected )
-    //console.log(currentPage)
-    UserService.getCursorPaginatedUsersById(userId,cursor).then((response) =>{
+    //console.log(data)
+    UserService.getCursorPaginatedAddressByUserId(userId,cursor).then((response) =>{
       setAddresses(response.data.list)
-      
+      setPrevious(cursor)
+      setCursor(response.data.cursor)
       
     }).catch(error =>{
       console.log(error);
     })
    };
 
+   
 
     return (
       <div className = "container">
         <h2 className="text-center"> Address List </h2>
+        <br/><br/>
+        <div align="center">
+          <form >
+            Filter: 
+            <input type="text" placeholder='Search' name="keyword"  value={keyword} onChange={(e) => setKeyword((e.target.value))} required/>
+            &nbsp;
+            <button className="btn btn-success" onClick={(e) =>filterAddresses(e)} > Submit</button> 
+            &nbsp;
+            <button className="btn btn-danger" onClick={(e) =>cancel(e)} >Cancel</button>
+        </form>
+        </div>
         <button className = "btn btn-primary mb-2" onClick={(e) =>addAddress(e)} > Add Address </button>
         <button className = "btn btn-primary mb-2" onClick={(e) =>back(e)} style = {{marginLeft: "10px"}}> Back </button>
         <button className = "btn btn-primary mb-2" onClick={(e) =>defaultAddress(e)} style = {{marginLeft: "10px"}}> Default Address </button>
